@@ -4,7 +4,13 @@ spring:
   mongodb:
     uri: mongodb://root:example@localhost:27017/circuit-breaker?authSource=admin
 
-
 client:
   comments:
     url: http://localhost:8082
+
+
+resilience4j.circuitbreaker:
+  instances:
+    comments:
+      slidingWindowSize: 8 #monitora 8 requisições
+      minimumNumberOfCalls: 4  #se as 4 primeiras falhar, abre o circuito
