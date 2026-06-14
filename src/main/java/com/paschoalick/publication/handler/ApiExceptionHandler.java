@@ -24,7 +24,7 @@ public class ApiExceptionHandler {
                     .path(request.getRequestURI())
                     .build();
 
-            log.error("[ERROR] payload={}", error, exception);
+            // log.error("[ERROR] payload={}", error, exception);
             return ResponseEntity.internalServerError().body(error);
         }
 }

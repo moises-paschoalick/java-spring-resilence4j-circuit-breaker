@@ -14,3 +14,7 @@ resilience4j.circuitbreaker:
     comments:
       slidingWindowSize: 8 #monitora 8 requisições
       minimumNumberOfCalls: 4  #se as 4 primeiras falhar, abre o circuito
+      #slowCallDurationThreshold: 2000 #tempo de resposta se passar de 2 seg ele abre o circuito (precisa passar pelas 4 requisições)
+      #slowCallRateThreshold: 50 #50% das requisições der erro abre o circuito
+      #permittedNumberOfCallsInHalfOpenState: 2 #number de chamadas no estado semi aberto
+      #waitDurationInOpenState: 10000 #tempo em no stado open, default 60 segundos
