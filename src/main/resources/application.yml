@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: publication
+  mongodb:
+    uri: mongodb://root:example@localhost:27017/circuit-breaker?authSource=admin
+
+
