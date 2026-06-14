@@ -5,3 +5,6 @@ spring:
     uri: mongodb://root:example@localhost:27017/circuit-breaker?authSource=admin
 
 
+client:
+  comments:
+    url: http://localhost:8082
