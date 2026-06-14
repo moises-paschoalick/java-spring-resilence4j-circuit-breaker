@@ -18,6 +18,6 @@ public class Publication {
     private String title;
     private String imageUrl;
     private String text;
-    private List<Comments> comments;
+    private List<Comment> comments;
 
 }

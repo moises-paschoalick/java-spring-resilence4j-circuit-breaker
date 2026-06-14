@@ -1,11 +1,8 @@
 package com.paschoalick.publication.service;
 
-import com.paschoalick.publication.client.CommentClient;
 import com.paschoalick.publication.domain.Publication;
-import com.paschoalick.publication.exceptions.FallbackException;
 import com.paschoalick.publication.mapper.PublicationMapper;
 import com.paschoalick.publication.repository.PublicationRepository;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +20,9 @@ public class PublicationService {
     private PublicationMapper publicationMapper;
 
     @Autowired
-    private CommentClient commentClient;
+    private CommentService commentService;
+    //private CommentClient commentClient;
+
 
     public void insert(Publication publication) {
         var publicationEntity = publicationMapper.toPublicationEntity(publication);
@@ -35,22 +34,25 @@ public class PublicationService {
         return publications.stream().map(publicationMapper::toPublication).toList();
     }
 
-    @CircuitBreaker(name = "comments", fallbackMethod = "findByIdFallback")
+    //removeu o circuitBreaker desse método
+    //@CircuitBreaker(name = "comments", fallbackMethod = "findByIdFallback")
     public Publication findById(String id) {
         var publication = publicationRepository.findById(id)
                 .map(publicationMapper::toPublication)
                 .orElseThrow(RuntimeException::new);
 
         // Enriquece com os comentários
-        var comments = commentClient.getComments(id);
+        // O ideal é o CircuitBreaker estar nesse método de getComments
+        // pois se pegar um id errado vai cair no fallback
+        var comments = commentService.getComments(id);
         publication.setComments(comments);
         return publication;
-    }
+    };
 
     // Precisa ter a mesma assinatura do método que está anotado com
     // CircuitBreaker
-    public Publication findByIdFallback(String id, Throwable cause) {
+    /*public Publication findByIdFallback(String id, Throwable cause) {
             log.warn("[WARN] fallback with id {}", id);
             throw new FallbackException(cause);
-    }
+    }*/
 }
