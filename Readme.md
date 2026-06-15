@@ -1,4 +1,4 @@
-# Publication Service — Circuit Breaker com Resilience4j
+# Publication Service: Circuit Breaker com Resilience4j
 
 Projeto de estudo sobre o padrão **Circuit Breaker** aplicado a microsserviços com Spring Boot e Resilience4j. Desenvolvido seguindo o curso do **Dev de Olho**.
 
@@ -44,14 +44,14 @@ Quando o circuito está **OPEN**, o fallback responde com uma lista de comentár
 
 - **Java 17**
 - **Spring Boot 4.1.0**
-- **Spring Cloud** — Circuit Breaker (Resilience4j) e OpenFeign
-- **Resilience4j** — implementação do circuit breaker
-- **Spring Data MongoDB** — persistência das publicações
-- **Spring Data Redis (Jedis)** — cache para o fallback
-- **MapStruct** — mapeamento entre entidades, domínios e DTOs
-- **Lombok** — redução de boilerplate
-- **Docker Compose** — MongoDB, Mongo Express e Redis
-- **WireMock** — mock do serviço de comentários para simular falhas e lentidão
+- **Spring Cloud**: Circuit Breaker (Resilience4j) e OpenFeign
+- **Resilience4j**: implementação do circuit breaker
+- **Spring Data MongoDB**: persistência das publicações
+- **Spring Data Redis (Jedis)**: cache para o fallback
+- **MapStruct**: mapeamento entre entidades, domínios e DTOs
+- **Lombok**: redução de boilerplate
+- **Docker Compose**: MongoDB, Mongo Express e Redis
+- **WireMock**: mock do serviço de comentários para simular falhas e lentidão
 
 ## Pré-requisitos
 
@@ -86,7 +86,7 @@ use circuit-breaker
 show collections
 ```
 
-> Atenção ao `authSource=admin` na URI — sem ele, a autenticação falha com `error 13 (Unauthorized)`.
+> Atenção ao `authSource=admin` na URI  sem ele, a autenticação falha com `error 13 (Unauthorized)`.
 
 ### 3. Suba o mock do serviço de comentários (WireMock)
 
@@ -165,7 +165,7 @@ resilience4j.circuitbreaker:
       slowCallRateThreshold: 50       # abre se 50% forem lentas
 ```
 
-O circuit breaker é aplicado no `CommentService`, isolando apenas a chamada externa — assim, uma falha no serviço de comentários não derruba a leitura da publicação:
+O circuit breaker é aplicado no `CommentService`, isolando apenas a chamada externa  assim, uma falha no serviço de comentários não derruba a leitura da publicação:
 
 ```java
 @CircuitBreaker(name = "comments", fallbackMethod = "getCommentsFallback")
@@ -200,7 +200,7 @@ Para ver o circuito abrir por **lentidão**, adicione um delay no stub do WireMo
 
 ## Observação importante sobre o setup
 
-Para que a anotação `@CircuitBreaker` (implementada como um `@Aspect` do AspectJ) seja efetivamente aplicada, o `aspectjweaver` precisa estar no classpath. Sem ele, o Spring Boot não habilita o AspectJ auto-proxy, e a anotação é **ignorada silenciosamente** — o circuito nunca conta as falhas nem abre.
+Para que a anotação `@CircuitBreaker` (implementada como um `@Aspect` do AspectJ) seja efetivamente aplicada, o `aspectjweaver` precisa estar no classpath. Sem ele, o Spring Boot não habilita o AspectJ auto-proxy, e a anotação é **ignorada silenciosamente**  o circuito nunca conta as falhas nem abre.
 
 Garanta esta dependência no `pom.xml`:
 
@@ -210,6 +210,15 @@ Garanta esta dependência no `pom.xml`:
     <artifactId>spring-boot-starter-aop</artifactId>
 </dependency>
 ```
+
+## Próximos passos  outros padrões de resiliência
+
+Além do Circuit Breaker, o Resilience4j traz outros padrões que protegem o mesmo ponto
+(a chamada externa de comentários). Veja o complemento de estudo:
+
+📄 **[Retry e Bulkhead com Resilience4j](./docs/retry-e-bulkhead.md)**  quando tentar de
+novo (Retry) e como isolar recursos para não esgotar as threads da aplicação (Bulkhead),
+incluindo a ordem correta dos aspects ao combiná-los com o Circuit Breaker.
 
 ## Licença
 
