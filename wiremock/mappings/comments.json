@@ -4,7 +4,6 @@
       "url":"/comments/6a2ebb1ae004b8814cee5a05"
    },
    "response":{
-     "fixedDelayMilliseconds": "3000",
       "status":200,
       "headers":{
          "Content-Type":"application/json"
@@ -13,7 +12,11 @@
          {
             "author":"João",
             "text":"Muito bom o curso do DevDeOlho"
-         }
+         },
+        {
+          "author":"Danilo",
+          "text":"Top mesmo esse curso!"
+        }
       ]
    }
 }
